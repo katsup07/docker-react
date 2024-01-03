@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build: 
+      context: . # look in root directory
+      dockerfile: Dockerfile.dev # use this file
+    ports:
+      - "3000:3000"
+    volumes: # Needed here to see updates in code changes in development
+      - /app/node_modules # Do not map(use reference from) this to anything outside container 
+      - .:/app # Map everything else outside the container to /app in the container
+  tests:
+    build:
+     context: .
+     dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"] # Overide default command of npm run start
